@@ -24,7 +24,7 @@ jobs:
         pipenv install
     - name: Lint
       run: |
-        flake8 .
+        pipenv run flake8 .
     - name: Test
       run: |
-        pytest
+        pipenv run pytest
