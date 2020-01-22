@@ -43,3 +43,10 @@ jobs:
         env:
           API_URL: http://localhost:3000
           API_KEY: '111111111111'
+      - name: Semantic Release
+        if: github.ref == 'refs/heads/master'
+        uses: AlphaMycelium/psr-action@master
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          pypi_username: ${{secrets.PYPI_USERNAME}}
+          pypi_password: ${{secrets.PYPI_PASSWORD}}
