@@ -10,3 +10,4 @@ firstclasspostcodes = {editable = true,path = "."}
 pytest = "*"
 flake8 = "*"
 mock = "*"
+zipp = "==1.0.0"
