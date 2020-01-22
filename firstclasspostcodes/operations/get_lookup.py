@@ -32,7 +32,7 @@ class GetLookup:
 
         if parsed_latitude is False or parsed_longitude is False or is_valid_coordinate is False:
             error_object = {
-                'message': f'Parameter is invalid: {query_params}',
+                'message': 'Parameter is invalid: {}'.format(query_params),
                 'docUrl': 'https://docs.firstclasspostcodes.com/operation/getLookup'
             }
 

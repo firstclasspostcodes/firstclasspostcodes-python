@@ -32,7 +32,7 @@ class Configuration:
 
     def base_url(self):
         base_path = PurePath('/', self.base_path)
-        return f'{self.protocol}://{self.host}{base_path}'
+        return '{}://{}{}'.format(self.protocol, self.host, base_path)
 
     def request_params(self):
         params = {
@@ -40,7 +40,7 @@ class Configuration:
             'verify': self.ssl_verify,
             'headers': {
                 'x-api-key': self.api_key,
-                'accept': f'application/#{self.content}; q=1.0, application/json; q=0.5'
+                'accept': 'application/#{}; q=1.0, application/json; q=0.5'.format(self.content)
             }
         }
 

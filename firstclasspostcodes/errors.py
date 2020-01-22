@@ -11,7 +11,7 @@ class ResponseError(Exception):
         if len(docUrl) > 0:
             self.doc_url = docUrl
         else:
-            self.doc_url = f'{DOC_URL}/{type}'
+            self.doc_url = '{}/{}'.format(DOC_URL, type)
         self.type = type
 
 

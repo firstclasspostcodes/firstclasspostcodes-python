@@ -7,7 +7,7 @@ class GetPostcode:
 
         if type(postcode) != str or len(postcode) == 0:
             error_object = {
-                'message': f'Unexpected postcode parameter: "{postcode}"',
+                'message': 'Unexpected postcode parameter: "{}"'.format(postcode),
                 'docUrl': 'https://docs.firstclasspostcodes.com/operation/getPostcode',
             }
 

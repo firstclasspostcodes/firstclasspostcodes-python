@@ -16,7 +16,7 @@ configuration = {'protocol': URL.scheme, 'host': URL.netloc, 'base_path': URL.pa
 
 class TestIntegrationClientClass:
     def setup_method(self):
-        self.postcodes = requests.get(f'{API_URL}/data/.postcodes').json()
+        self.postcodes = requests.get('{}/data/.postcodes'.format(API_URL)).json()
 
     def test_get_postcode_responds_correctly(self):
         postcode = random.choice(self.postcodes)['postcode']

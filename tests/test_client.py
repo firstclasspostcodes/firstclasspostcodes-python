@@ -18,7 +18,7 @@ class TestClientClass:
 
     def test_user_agent_is_correct(self):
         client = Client()
-        assert re.match(f'Firstclasspostcodes/python@{VERSION}', client.user_agent)
+        assert re.match('Firstclasspostcodes/python@{}'.format(VERSION), client.user_agent)
 
     def test_configuration_overrides_are_set_correctly(self):
         api_key = 'abdertyhgfde'

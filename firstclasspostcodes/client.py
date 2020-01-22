@@ -11,7 +11,7 @@ from firstclasspostcodes.version import VERSION
 class Client(Events, Operations):
     configuration = None
 
-    user_agent = f'Firstclasspostcodes/python@{VERSION}'
+    user_agent = 'Firstclasspostcodes/python@{}'.format(VERSION)
 
     def __init__(self, **configuration_overrides):
         super().__init__()
@@ -45,6 +45,6 @@ class Client(Events, Operations):
             raise ResponseError(str(e), type='liberror')
 
     def build_request_url(self, path):
-        request_url = f'{self.configuration.base_url()}{path}'
+        request_url = self.configuration.base_url() + path
         safe_request_url = re.sub(r"(?<!:)\/\/", '/', request_url)
         return safe_request_url
