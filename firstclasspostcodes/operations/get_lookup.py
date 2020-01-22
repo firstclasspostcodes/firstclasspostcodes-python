@@ -1,3 +1,6 @@
+from firstclasspostcodes.errors import ParameterValidationError
+
+
 def parse_float(val):
     try:
         number = float(val)
@@ -12,29 +15,20 @@ def within(latitude, longitude):
 
 
 class GetLookup:
-    def get_lookup(self, params={}):
+    def get_lookup(self, latitude, longitude, radius=0.1):
         error_object = None
 
-        if type(params) is not dict:
-            raise ValueError(f'Expected dict, received: {type(params)}')
-
-        if 'latitude' not in params or 'longitude' not in params:
-            error_object = {
-                'message': 'Missing required parameters, expected { latitude, longitude }',
-                'docUrl': 'https://docs.firstclasspostcodes.com/operation/getLookup'
-            }
-
-        latitude = parse_float(params['latitude'])
-        longitude = parse_float(params['longitude'])
-        radius = parse_float(params['radius']) or 0.1
+        parsed_latitude = parse_float(latitude)
+        parsed_longitude = parse_float(longitude)
+        parsed_radius = parse_float(radius) or 0.1
 
         query_params = {
-            'latitude': latitude,
-            'longitude': longitude,
-            'radius': radius,
+            'latitude': parsed_latitude,
+            'longitude': parsed_longitude,
+            'radius': parsed_radius,
         }
 
-        if latitude is False or longitude is False:
+        if parsed_latitude is False or parsed_longitude is False or within(latitude, longitude) is False:
             error_object = {
                 'message': f'Parameter is invalid: {query_params}',
                 'docUrl': 'https://docs.firstclasspostcodes.com/operation/getLookup'
@@ -51,11 +45,11 @@ class GetLookup:
         self.emit('operation:getLookup', request_params)
 
         if error_object:
-            error = ParameterValidationError(error_object)
-            self.configuration.logger.error('Encountered ParameterValidationError: %s', error)
+            error = ParameterValidationError(**error_object)
+            self.configuration.logger.error('Encountered: %s', error)
             self.emit('error', error)
             raise error
 
-        response = self.request(request_params)
+        response = self.request(**request_params)
 
         return response

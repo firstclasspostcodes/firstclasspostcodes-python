@@ -1,7 +1,7 @@
 import re
 import json
 import requests
-from firstclasspostcodes.response_error import ResponseError
+from firstclasspostcodes.errors import ResponseError
 from firstclasspostcodes.configuration import Configuration
 from firstclasspostcodes.events import Events
 from firstclasspostcodes.operations import Operations
@@ -13,18 +13,18 @@ class Client(Events, Operations):
 
     user_agent = f'Firstclasspostcodes/python@{VERSION}'
 
-    def __init__(self, configuration_overrides={}):
+    def __init__(self, **configuration_overrides):
         super().__init__()
-        self.configuration = Configuration(configuration_overrides)
+        self.configuration = Configuration(**configuration_overrides)
         self.on("request", lambda req: self.configuration.logger.debug('Request: %s', req))
         self.on("response", lambda res: self.configuration.logger.debug('Request: %s', res))
         self.on("error", lambda err: self.configuration.logger.error(err))
 
-    def request(self, options={}):
-        url = self.build_request_url(options['path'])
-        request_params = {'params': options['query_params']}.update(self.configuration.request_params())
-        self.emit('request', {'url': url}.update(request_params))
-        response = self.call_request(url, options['method'], request_params)
+    def request(self, path, query_params, method):
+        url = self.build_request_url(path)
+        request_params = {'params': query_params, **self.configuration.request_params()}
+        self.emit('request', {'url': url, **request_params})
+        response = self.call_request(url, method, request_params)
         data = response.json()
         self.emit('response', data)
         return data
@@ -32,17 +32,17 @@ class Client(Events, Operations):
     def call_request(self, url, method, params={}):
         try:
             request = getattr(requests, method)
-            response = request(url, *params)
+            response = request(url, **params)
             if response.status_code == requests.codes.ok:
                 return response
             try:
-                raise ResponseError(response.json())
+                raise ResponseError(**response.json())
             except json.decoder.JSONDecodeError:
-                raise ResponseError(response, 'network-error')
+                raise ResponseError(response, type='network-error')
         except requests.exceptions.Timeout:
-            raise ResponseError('Connection timed out', 'timeout')
+            raise ResponseError('Connection timed out', type='timeout')
         except requests.exceptions.RequestException as e:
-            raise ResponseError(e, 'liberror')
+            raise ResponseError(str(e), type='liberror')
 
     def build_request_url(self, path):
         url_path = re.sub(r"^\/", '', path)

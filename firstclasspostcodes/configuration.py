@@ -26,9 +26,9 @@ class Configuration:
 
     timeout = 30
 
-    def __init__(self, options={}):
-        for key in options.keys():
-            setattr(self, key, options[key])
+    def __init__(self, **config):
+        for key, value in config.items():
+            setattr(self, key, value)
 
     def base_url(self):
         base_path = PurePath('/', self.base_path)

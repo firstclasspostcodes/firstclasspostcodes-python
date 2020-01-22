@@ -9,3 +9,4 @@ firstclasspostcodes = {editable = true,path = "."}
 [dev-packages]
 pytest = "*"
 flake8 = "*"
+mock = "*"

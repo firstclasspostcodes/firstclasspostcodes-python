@@ -1,3 +1,6 @@
+from firstclasspostcodes.errors import ParameterValidationError
+
+
 class GetPostcode:
     def get_postcode(self, postcode):
         error_object = None
@@ -21,11 +24,11 @@ class GetPostcode:
         self.emit('operation:getPostcode', request_params)
 
         if error_object:
-            error = ParameterValidationError(error_object)
-            self.configuration.logger.error('Encountered ParameterValidationError: %s', error)
+            error = ParameterValidationError(**error_object)
+            self.configuration.logger.error('Encountered: %s', error)
             self.emit('error', error)
             raise error
 
-        response = self.request(request_params)
+        response = self.request(**request_params)
 
         return response

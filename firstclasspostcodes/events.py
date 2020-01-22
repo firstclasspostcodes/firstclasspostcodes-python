@@ -9,9 +9,9 @@ class Events:
         handler_id = len(self.events[event_name]) - 1
         return handler_id
 
-    def off(self, event_name, handler_id):
-        if event_name in self.events and handler_id in self.events[event_name]:
-            del self.events[event_name][handler_id]
+    def off(self, event_name, handler):
+        if event_name in self.events and handler in self.events[event_name]:
+            self.events[event_name].remove(handler)
             return True
         return False
 
