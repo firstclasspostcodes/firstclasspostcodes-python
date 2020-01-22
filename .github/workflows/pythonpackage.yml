@@ -11,7 +11,7 @@ jobs:
       mock-api:
         image: firstclasspostcodes/mock:latest
         env:
-          - PORT=3000
+          PORT: 3000
         ports:
           - '3000:3000'
 
