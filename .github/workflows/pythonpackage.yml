@@ -39,7 +39,7 @@ jobs:
           pipenv run pytest
       - name: Integration Tests
         run: |
-          pipenv run pytest test/integration_client.py
+          pipenv run pytest tests/integration*.py
         env:
           API_URL: http://localhost:3000
           API_KEY: '111111111111'
