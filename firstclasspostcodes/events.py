@@ -16,5 +16,6 @@ class Events:
         return False
 
     def emit(self, event_name, *args, **keywargs):
-        for handler in self.events[event_name]:
-            handler(*args, **keywargs)
+        if event_name in self.events:
+            for handler in self.events[event_name]:
+                handler(*args, **keywargs)

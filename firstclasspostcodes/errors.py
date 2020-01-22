@@ -14,5 +14,7 @@ class ResponseError(Exception):
             self.doc_url = f'{DOC_URL}/{type}'
         self.type = type
 
+
 class ParameterValidationError(ResponseError, Exception):
-    pass
+    def __init__(self, **error):
+        super().__init__(type='parameter-validation-error', **error)

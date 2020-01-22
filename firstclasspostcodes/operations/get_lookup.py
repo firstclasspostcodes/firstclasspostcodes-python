@@ -28,7 +28,9 @@ class GetLookup:
             'radius': parsed_radius,
         }
 
-        if parsed_latitude is False or parsed_longitude is False or within(latitude, longitude) is False:
+        is_valid_coordinate = within(parsed_latitude, parsed_longitude)
+
+        if parsed_latitude is False or parsed_longitude is False or is_valid_coordinate is False:
             error_object = {
                 'message': f'Parameter is invalid: {query_params}',
                 'docUrl': 'https://docs.firstclasspostcodes.com/operation/getLookup'

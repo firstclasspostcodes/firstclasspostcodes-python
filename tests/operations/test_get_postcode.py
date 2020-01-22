@@ -1,12 +1,14 @@
 import os
+import pytest
 from urllib.parse import urlparse
 from mock import Mock, ANY
 from firstclasspostcodes.operations import GetPostcode
+from firstclasspostcodes.errors import ParameterValidationError
 from firstclasspostcodes.configuration import Configuration
 
-URL=urlparse(os.environ.get('API_URL'))
+URL = urlparse(os.environ.get('API_URL'))
 
-KEY=os.environ.get('API_KEY')
+KEY = os.environ.get('API_KEY')
 
 
 class GetPostcodeStub(GetPostcode):
@@ -27,4 +29,15 @@ class TestGetPostcodeClass:
         client.emit.assert_called_once_with('operation:getPostcode', ANY)
         client.request.assert_called_once_with(method='get', path='/postcode', query_params=params)
         assert response == 12345
-    
+
+    def test_when_postcode_is_invalid(self):
+        client = GetPostcodeStub()
+        with pytest.raises(ParameterValidationError) as error:
+            client.get_postcode('')
+        assert error.value.type == 'parameter-validation-error'
+
+    def test_when_postcode_is_incorrect(self):
+        client = GetPostcodeStub()
+        with pytest.raises(ParameterValidationError) as error:
+            client.get_postcode(12345)
+        assert error.value.type == 'parameter-validation-error'

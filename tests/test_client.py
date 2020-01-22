@@ -35,22 +35,22 @@ class TestClientClass:
         response = Mock()
         response.json = Mock(return_value=12345)
         client.call_request = Mock(return_value=response)
-        test_response = client.request(method='get', query_params={'a':1}, path='/call')
+        test_response = client.request(method='get', query_params={'a': 1}, path='/call')
         client.call_request.assert_called_once_with('https://example.com/test/call', 'get', ANY)
         response.json.assert_called_once()
         assert test_response == 12345
 
     def test_call_request_returns_correctly_on_ok(self):
         client = Client()
-        mock_response = Mock(**{'status_code':200})
+        mock_response = Mock(**{'status_code': 200})
         requests.get = Mock(return_value=mock_response)
-        response = client.call_request(url='http://example.com', method='get')
+        client.call_request(url='http://example.com', method='get')
         requests.get.assert_called_once_with('http://example.com')
 
     def test_call_request_raises_api_error(self):
         client = Client()
-        json = {'docUrl':'docUrl', 'message': 'error message', 'type':'type'}
-        mock_response = Mock(**{'status_code':400, 'json.return_value':json})
+        json = {'docUrl': 'docUrl', 'message': 'error message', 'type': 'type'}
+        mock_response = Mock(**{'status_code': 400, 'json.return_value': json})
         requests.get = Mock(return_value=mock_response)
         with pytest.raises(ResponseError) as error:
             client.call_request(url='http://example.com', method='get')
@@ -61,7 +61,7 @@ class TestClientClass:
     def test_call_request_raises_json_decode_error(self):
         client = Client()
         json_error = json.decoder.JSONDecodeError(pos=0, doc='', msg='')
-        response = {'content':'error message', 'status_code':500, 'json.side_effect':json_error}
+        response = {'content': 'error message', 'status_code': 500, 'json.side_effect': json_error}
         mock_response = Mock(**response)
         requests.get = Mock(return_value=mock_response)
         with pytest.raises(ResponseError) as error:

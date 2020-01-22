@@ -45,5 +45,6 @@ class Client(Events, Operations):
             raise ResponseError(str(e), type='liberror')
 
     def build_request_url(self, path):
-        url_path = re.sub(r"^\/", '', path)
-        return f'{self.configuration.base_url()}/{url_path}'
+        request_url = f'{self.configuration.base_url()}{path}'
+        safe_request_url = re.sub(r"(?<!:)\/\/", '/', request_url)
+        return safe_request_url

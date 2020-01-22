@@ -4,7 +4,7 @@ from firstclasspostcodes.errors import ResponseError
 
 class TestResponseErrorClass:
     def test_api_error_instantiation(self):
-        response = {'docUrl':'example.com', 'type':'some-type', 'message':'message'}
+        response = {'docUrl': 'example.com', 'type': 'some-type', 'message': 'message'}
         error = ResponseError(**response)
         assert str(error) == 'message'
         assert error.type == 'some-type'
