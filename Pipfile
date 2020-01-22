@@ -5,6 +5,7 @@ verify_ssl = true
 [packages]
 requests = "*"
 firstclasspostcodes = {editable = true,path = "."}
+pathlib = "*"
 
 [dev-packages]
 pytest = "*"
