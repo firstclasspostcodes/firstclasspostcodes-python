@@ -5,10 +5,10 @@ verify_ssl = true
 [packages]
 requests = "*"
 firstclasspostcodes = {editable = true,path = "."}
-pathlib = "*"
 
 [dev-packages]
 pytest = "*"
 flake8 = "*"
 mock = "*"
 zipp = "==1.0.0"
+pathlib2 = "*"
