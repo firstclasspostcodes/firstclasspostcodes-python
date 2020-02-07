@@ -10,5 +10,5 @@ firstclasspostcodes = {editable = true,path = "."}
 pytest = "*"
 flake8 = "*"
 mock = "*"
-zipp = "==1.0.0"
+zipp = "==2.2.0"
 pathlib2 = "*"
